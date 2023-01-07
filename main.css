@@ -19,8 +19,30 @@
   color: white;
 }
 
-#forwarder-data-table td.expired {
-  background: red;
+#forwarder-data-table {
+  width: auto;
+}
+
+#forwarder-data-table .odd td.expired {
+  background: #d88;
+}
+
+#forwarder-data-table .even td.expired {
+  background: #faa;
+}
+
+#forwarder-data-table .odd td.expiring {
+  background: #dd8;
+}
+
+#forwarder-data-table .even td.expiring {
+  background: #ffa;
+}
+
+#forwarder-data-table tr .remove {
+  content: "\2718";
+  color: red;
+  text-decoration: none;
 }
 
 .error {
@@ -28,7 +50,11 @@
   font-style: oblique;
 }
 
-#forwarder-data-table td {
+.hidden {
+  display: none;
+}
+
+#forwarder-data-table td, #forwarder-data-table th {
   text-align: center;
 }
 

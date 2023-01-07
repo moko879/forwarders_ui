@@ -17,6 +17,7 @@
 </head>
 <body>
   <div id="login-form">
+    <form method="post" action="">
       <p>
         <label for="login-email">Email:</label>
         <input type="email" id="login-email" placeholder="Enter Email" name="email">
@@ -25,6 +26,7 @@
         <label for=login-password>Password:</label>
         <input type="password" id="login-password" placeholder="Enter Password" name="password">
       </p>
+    </form>
   </div>
   <div id="forwarder-form">
     <form method="post" action="">
@@ -54,6 +56,7 @@
           <th>Forwarder</th>
           <th>Destination</th>
           <th class="sorter-shortDate col-date" data-date-format="yyymmdd">Expiration Date</th>
+          <th data-filter="false" data-sorter="false"></th>
         </tr>
       </thead>
       <tbody>
@@ -95,13 +98,40 @@
         //return date.toISOString().slice(0,10);
         return date.getFullYear() + "-" + month + "-" + day;
       }
+
+      function delete_row($row, forwarder, destination, expiration) {
+        var email = validate_email('#login-email');
+        var password = $('#login-password').val();
+        var response = $.post({
+          url: 'delete.php',
+          data: {
+            email: email,
+            password: password,
+            forwarder: forwarder,
+            destination: destination,
+            expiration: expiration,
+          },
+          dataType: 'json'
+        }).done((data) => {
+          $row.remove();
+          $('#forwarder-data-table').trigger('update');
+        }).fail((data) => {
+          $('#forwarder-errors').append(`<span class="error">Unknown error</span>`);
+          console.error(data);
+        });
+      }
+
       function add_forwarder(row) {
-        var table = $('#forwarder-data-table tbody')
-        table.append('<tr><td>'+row.forwarder+'</td>'+
+        var $row = $('<tr><td>'+row.forwarder+'</td>'+
           '<td>'+row.destination+'</td>'+
-          '<td>'+row.expiration+'</td></tr>');
-        table.trigger("update");
-        table.trigger("appendCache");
+          '<td>'+row.expiration+'</td>'+
+          '<td><a href="#" class="remove">\u2718</a></td></tr>');
+        $row.click(function(event) {
+          delete_row($row, row.forwarder, row.destination, row.expiration);
+        });
+        $('#forwarder-data-table')
+          .find('tbody').append($row)
+          .trigger('addRows', [$row, /*resort=*/true]);
       }
 
       // Initialize table.
@@ -121,15 +151,16 @@
           formatter_column: {
             ".col-date": function(text, data) {
               data.$cell.attr(data.config.textAttribute, text);
-              console.log(timestamp_to_date(text) + ": " + parseInt(text) + " vs. " + Date.now()/1000 + " = " + (parseInt(text) > Date.now()/1000));
               if(parseInt(text) < Date.now()/1000) {
                 data.$cell.addClass('expired');
+              } else if(parseInt(text) < Date.now()/1000 + 7 * 24 * 60 * 60 /*1 week*/) {
+                data.$cell.addClass('expiring');
               }
               return timestamp_to_date(text);
             }
           },
+          filter_cssFilter: ['', '', '', 'hidden'],
           filter_formatter : {
-
             // Date (two inputs)
             ".col-date" : function(cell, index) {
               return $.tablesorter.filterFormatter.uiDatepicker( cell, index, {
@@ -171,7 +202,7 @@
         });
       }).fail((data) => {
         $('#forwarder-data').append(`<span class="error">Unknown error</span>`);
-        console.log(data);
+        console.error(data);
       });
 
       function validate_email(matcher) {
@@ -214,7 +245,7 @@
           }
         }).fail((data) => {
           $('#forwarder-errors').append(`<span class="error">Unknown error</span>`);
-          console.log(data);
+          console.error(data);
         });
       });
     });

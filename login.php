@@ -11,6 +11,7 @@ function check_login() {
   $result = $mysqli->query(sprintf(
     "SELECT password FROM user WHERE email = '%s'",
     $mysqli->real_escape_string($email)));
+
   if(!$result or $result->num_rows == 0) {
     return false;
   }
