@@ -135,7 +135,7 @@ if(!isset($_SESSION['email'])) {
           '<td>'+row.destination+'</td>'+
           '<td>'+row.expiration+'</td>'+
           '<td><a href="#" class="remove">\u2718</a></td></tr>');
-        $row.click(function(event) {
+        $row.find('.remove').click(function(event) {
           delete_row($row, row.forwarder, row.destination, row.expiration);
         });
         $('#forwarder-data-table')
@@ -209,6 +209,7 @@ if(!isset($_SESSION['email'])) {
         data.forEach((row) => {
           add_forwarder(row);
         });
+        $('#forwarder-data-table').trigger('applyWidgets');
       }).fail((data) => {
         $('#forwarder-data').append(`<span class="error">Unknown error</span>`);
         console.error(data);
