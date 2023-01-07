@@ -13,7 +13,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
   $password = $_POST['password'];
 
   $result = $mysqli->query(sprintf(
-    "SELECT password FROM user WHERE email = '%s'",
+    "SELECT password FROM ".DB_USERS_TABLE." WHERE email = '%s'",
     $mysqli->real_escape_string($email)));
 
   if(!$result or $result->num_rows == 0 ||
