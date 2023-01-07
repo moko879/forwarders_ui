@@ -80,6 +80,7 @@ if(!isset($_SESSION['email'])) {
     </div>
   </div>
   <script type="application/javascript">
+    const LOGIN_EMAIL = "<?php echo $_SESSION['email']; ?>";
     $(document).ready(function() {
       // Initialize form.
       $('#forwarder-eternal').change((e) => {
@@ -138,11 +139,16 @@ if(!isset($_SESSION['email'])) {
       function add_forwarder(row) {
         var $row = $('<tr><td>'+row.forwarder+'</td>'+
           '<td>'+row.destination+'</td>'+
-          '<td>'+row.expiration+'</td>'+
-          '<td><a href="#" class="remove">\u2718</a></td></tr>');
-        $row.find('.remove').click(function(event) {
-          delete_row($row, row.forwarder, row.destination, row.expiration);
-        });
+          '<td>'+row.expiration+'</td><td></td></tr>');
+        if(row.destination === LOGIN_EMAIL) {
+          $link = $('<a href="#" class="remove">\u2718</a>');
+          $row.find('td').last().append($link);
+          $link.click(function(event) {
+            delete_row($row, row.forwarder, row.destination, row.expiration);
+            event.preventDefault();
+            return false;
+          });
+        }
         $('#forwarder-data-table')
           .find('tbody').append($row)
           .trigger('addRows', [$row, /*resort=*/true]);
