@@ -150,6 +150,7 @@ if(!isset($_SESSION['email'])) {
         widthFixed: true,
         sortList: [[0,0], [1,0]],
         widgets: ['zebra', 'formatter', 'filter', 'pager'],
+        selectorRemove: '.hidden',
         widgetOptions: {
           filter_placeholder: {
             search: 'Filter...',
