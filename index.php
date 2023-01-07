@@ -28,21 +28,23 @@ if(!isset($_SESSION['email'])) {
   </div>
   <div id="forwarder-form">
     <form method="post" action="">
-      <p>
-        <label for="forwarder-email">Forwarder:</label>
-        <input type="email" id="forwarder-email" placeholder="Enter Forwarder" name="forwarder">
-      </p>
-      <p>
-        <label for="forwarder-expiration">Expiration Date:</label>
-        <input type="date" id="forwarder-expiration" placeholder="Enter Date" name="expiration">
-        <label id="forwarder-eternal-label">
+      <div id="forwarder-form-container">
+        <p>
+          <label for="forwarder-email">Forwarder:</label>
+          <input type="email" id="forwarder-email" placeholder="Enter New Forwarder" name="forwarder">
+        </p>
+        <p>
+          <label for="forwarder-expiration">Expiration Date:</label>
+          <input type="date" id="forwarder-expiration" placeholder="Enter Date" name="expiration">
           <input type="checkbox" id="forwarder-eternal" placeholder="Never" name="forward-eternal">
-          Never
-        </label>
-      </p>
-      <p>
-        <button type="submit">Submit</button>
-      </p>
+          <label id="forwarder-eternal-label">
+            Never
+          </label>
+        </p>
+        <p class="submit">
+          <button type="submit">Create</button>
+        </p>
+      </div>
     </form>
     <p id="forwarder-errors">
     </p>
@@ -69,7 +71,7 @@ if(!isset($_SESSION['email'])) {
         <img src="jquery.tablesorter/css/images/next.png" class="next"/>
         <img src="jquery.tablesorter/css/images/last.png" class="last"/>
         <select class="pagesize">
-          <option selected="selected" value="5">5</option>
+          <option selected="selected" value="10">10</option>
           <option value="25">25</option>
           <option value="50">50</option>
           <option value="100">100</option>
@@ -153,7 +155,6 @@ if(!isset($_SESSION['email'])) {
         widthFixed: true,
         sortList: [[0,0], [1,0]],
         widgets: ['zebra', 'formatter', 'filter', 'pager'],
-        selectorRemove: '.hidden',
         widgetOptions: {
           filter_placeholder: {
             search: 'Filter...',
@@ -189,28 +190,12 @@ if(!isset($_SESSION['email'])) {
               });
             }
           },
-          pager_css: {
-              container   : 'tablesorter-pager',    // class added to make included pager.css file work
-              errorRow    : 'tablesorter-errorRow', // error information row (don't include period at beginning); styled in theme file
-              disabled    : 'disabled'              // class added to arrows @ extremes (i.e. prev/first arrows "disabled" on first page)
-          },
-          // jQuery selectors
-          pager_selectors: {
-            container   : '.pager',       // target the pager markup (wrapper)
-            first       : '.first',       // go to first page arrow
-            prev        : '.prev',        // previous page arrow
-            next        : '.next',        // next page arrow
-            last        : '.last',        // go to last page arrow
-            gotoPage    : '.gotoPage',    // go to page selector - select dropdown that sets the current page
-            pageDisplay : '.pagedisplay', // location of where the "output" is displayed
-            pageSize    : '.pagesize'     // page size selector - select dropdown that sets the "size" option
-          },
           pager_updateArrows: true,
           pager_startPage: 0,
           pager_pageReset: 0,
           pager_size: 5,
           pager_removeRows: false,
-          pager_fixedHeight: true,
+          pager_fixedHeight: false,
         },
       });
       var response = $.post({

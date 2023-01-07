@@ -5,17 +5,48 @@
   font-size: 12px;
 }
 
+body {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+#forwarder-form-container {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: stretch;
+  position: relative;
+}
+
+#forwarder-form-container p {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+}
+
+#forwarder-form-container input {
+  display: flex;
+  flex-grow: 1;
+}
+
+#forwarder-form-container .submit {
+  justify-content: center;
+}
+
 #forwarder-form p {
   margin: 0px 5px;
 }
 
 #forwarder-form label {
-  margin: 5px 10px 5px 0;
+  margin: 5px 5px 5px 0;
 }
 
 #forwarder-form input {
   vertical-align: middle;
-  margin: 5px 2px 5px 0;
+  margin: 5px;
   padding: 2px;
 }
 
@@ -24,6 +55,13 @@
   background-color: dodgerblue;
   border: 1px solid #ddd;
   color: white;
+}
+
+#forwarder-data {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: center;
 }
 
 #forwarder-data-table {
@@ -54,6 +92,12 @@
 
 /* pager element reset (needed for bootstrap) */
 .tablesorter-pager select {
-  width: 3.5em;
   text-align: center;
+}
+
+.pager {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+  align-items: center;
 }
