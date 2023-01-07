@@ -161,12 +161,19 @@ if(!isset($_SESSION['email'])) {
           formatter_column: {
             ".col-date": function(text, data) {
               data.$cell.attr(data.config.textAttribute, text);
-              if(parseInt(text) < Date.now()/1000) {
+              var expiry = parseInt(text);
+              var days = Math.round((expiry - Date.now()/1000)/(24*60*60));
+              var display = timestamp_to_date(text);
+              if(expiry < Date.now()/1000) {
                 data.$cell.addClass('expired');
-              } else if(parseInt(text) < Date.now()/1000 + 7 * 24 * 60 * 60 /*1 week*/) {
+                var hover = "Expired " + (-days) + " days ago";
+              } else if(expiry < Date.now()/1000 + 7 * 24 * 60 * 60 /*1 week*/) {
                 data.$cell.addClass('expiring');
+                var hover = "Expiring in " + days + " days";
+              } else {
+                var hover = "Expires on " + display;
               }
-              return timestamp_to_date(text);
+              return '<span class="expiry" title="' + hover + '">' + display + '</span>';
             }
           },
           filter_cssFilter: ['', '', '', 'hidden'],

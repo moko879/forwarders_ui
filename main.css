@@ -30,20 +30,16 @@
   width: auto;
 }
 
-#forwarder-data-table .odd td.expired {
-  background: #d88;
+#forwarder-data-table td.expired .expiry:after {
+  content: "\23f1";
+  margin-left: 0.5em;
+  color: #d55;
 }
 
-#forwarder-data-table .even td.expired {
-  background: #faa;
-}
-
-#forwarder-data-table .odd td.expiring {
-  background: #dd8;
-}
-
-#forwarder-data-table .even td.expiring {
-  background: #ffa;
+#forwarder-data-table td.expiring .expiry:after {
+  content: "\23f1";
+  margin-left: 0.5em;
+  color: #dd5;
 }
 
 #forwarder-data-table tr .remove {
