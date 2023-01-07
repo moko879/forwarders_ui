@@ -99,6 +99,8 @@ if(!isset($_SESSION['email'])) {
         $(e.target).parent().children('.error').remove()
       });
       function reset_expiration() {
+        $('#forwarder-eternal').prop('checked', false);
+        $('#forwarder-eternal').trigger('change');
         $('#forwarder-expiration').val(timestamp_to_date(Date.now()/1000 + 24*60*60));
       }
       reset_expiration();
@@ -253,8 +255,7 @@ if(!isset($_SESSION['email'])) {
             $('#forwarder-errors').append(`<span class="error">${data.error}</span>`);
           } else {
             $('#forwarder-email').val('');
-            $('#forwarder-expiration').val('');
-            $('#forwarder-eternal').prop('checked', false);
+            reset_expiration();
             add_forwarder(data);
           }
         }).fail((data) => {
