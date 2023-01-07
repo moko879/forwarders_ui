@@ -31,19 +31,19 @@
 }
 
 #forwarder-data-table td.expired .expiry:after {
-  content: "\23f1";
+  content: "\23f1\fe0e";
   margin-left: 0.5em;
   color: #d55;
 }
 
 #forwarder-data-table td.expiring .expiry:after {
-  content: "\23f1";
+  content: "\23f1\fe0e";
   margin-left: 0.5em;
   color: #dd5;
 }
 
 #forwarder-data-table tr .remove {
-  content: "\2718";
+  content: "\2718\fe0e";
   color: red;
   text-decoration: none;
 }
