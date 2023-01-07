@@ -19,7 +19,8 @@ if(!isset($_SESSION['email'])) {
   <link rel="stylesheet" href="jquery.tablesorter/css/theme.blue.css"></script>
   <link rel="stylesheet" href="jquery.tablesorter/css/jquery.tablesorter.pager.min.css"></script>
   <link rel="stylesheet" href="jquery.tablesorter/css/filter.formatter.min.css">
-  <link rel="stylesheet" href="main.css">
+  <link rel="stylesheet" href="css/common.css">
+  <link rel="stylesheet" href="css/index.css">
 </head>
 <body>
   <div id="logout">

@@ -1,0 +1,8 @@
+.error {
+  color: red;
+  font-style: oblique;
+}
+
+.hidden {
+  display: none;
+}

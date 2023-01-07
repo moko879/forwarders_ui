@@ -1,0 +1,24 @@
+#login-form {
+  display: flex;
+  justify-content: center;
+}
+
+#login-form-container {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: center;
+}
+
+#login-form-container p {
+  margin: 1ex 1em;
+}
+
+#change-password-enable {
+  font-size: 12px;
+  margin-left: 0px auto;
+}
+
+.invalid {
+  border-color: red;
+}

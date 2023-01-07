@@ -48,15 +48,6 @@
   text-decoration: none;
 }
 
-.error {
-  color: red;
-  font-style: oblique;
-}
-
-.hidden {
-  display: none;
-}
-
 #forwarder-data-table td, #forwarder-data-table th {
   text-align: center;
 }
