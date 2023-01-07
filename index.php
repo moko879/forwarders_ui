@@ -53,8 +53,8 @@ if(!isset($_SESSION['email'])) {
     <table id="forwarder-data-table">
       <thead>
         <tr>
-          <th>Forwarder</th>
-          <th>Destination</th>
+          <th class="col-email">Forwarder</th>
+          <th class="col-email">Destination</th>
           <th class="sorter-shortDate col-date" data-date-format="yyymmdd">Expiration Date</th>
           <th data-filter="false" data-sorter="false"></th>
         </tr>
@@ -152,7 +152,6 @@ if(!isset($_SESSION['email'])) {
       var table = $('#forwarder-data-table');
       $('#forwarder-data-table').tablesorter({
         theme: 'blue',
-        widthFixed: true,
         sortList: [[0,0], [1,0]],
         widgets: ['zebra', 'formatter', 'filter', 'pager'],
         widgetOptions: {

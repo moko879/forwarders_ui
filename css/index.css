@@ -64,8 +64,8 @@ body {
   align-items: center;
 }
 
-#forwarder-data-table {
-  width: auto;
+#forwarder-data-table .col-email {
+  min-width: 20em;
 }
 
 #forwarder-data-table td.expired .expiry:after {
