@@ -1,13 +1,9 @@
 <?php
 
+require_once('check_login.php');
 require_once('private/installation.php');
 require_once('exim.php');
 require_once('mysql.php');
-require_once('login.php');
-
-check_login() or die(json_encode([
-  'error' => 'Invalid email or password:'.$_POST['email'].' '.$_POST['password']
-]));
 
 # TODO: sanitize these to prevent injection
 $destination = $_POST['destination'];

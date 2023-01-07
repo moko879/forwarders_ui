@@ -1,3 +1,9 @@
+<?php
+session_start();
+if(!isset($_SESSION['email'])) {
+  header("Location: login.php");
+}
+?>
 <html>
 <head>
   <script src="jquery-3.6.3.min.js"></script>
@@ -16,17 +22,8 @@
   <link rel="stylesheet" href="main.css">
 </head>
 <body>
-  <div id="login-form">
-    <form method="post" action="">
-      <p>
-        <label for="login-email">Email:</label>
-        <input type="email" id="login-email" placeholder="Enter Email" name="email">
-      </p>
-      <p>
-        <label for=login-password>Password:</label>
-        <input type="password" id="login-password" placeholder="Enter Password" name="password">
-      </p>
-    </form>
+  <div id="logout">
+    <a href="logout.php">Logout</a>
   </div>
   <div id="forwarder-form">
     <form method="post" action="">
@@ -83,12 +80,28 @@
     $(document).ready(function() {
       // Initialize form.
       $('#forwarder-eternal').change((e) => {
-        $('#forwarder-expiration').val("").prop('disabled', $(e.target).prop('checked'));
+        if($(e.target).prop('checked')) {
+          $('#forwarder-expiration')
+            .attr('data-originalValue', $('#forwarder-expiration').val())
+            .val('')
+            .css({'color':'transparent'})
+            .prop('disabled', true);
+        } else {
+          $('#forwarder-expiration')
+            .val($('#forwarder-expiration').attr('data-originalValue'))
+            .attr('type','date')
+            .attr('data-originalValue', '')
+            .css({'color':''})
+            .prop('disabled', false);
+        }
       });
       $('input').focus((e) => {
         $(e.target).parent().children('.error').remove()
       });
-      $('#forwarder-expiration').val(timestamp_to_date(Date.now()/1000 + 24*60*60));
+      function reset_expiration() {
+        $('#forwarder-expiration').val(timestamp_to_date(Date.now()/1000 + 24*60*60));
+      }
+      reset_expiration();
 
       function timestamp_to_date(timestamp) {
         var date = new Date(timestamp*1000);
@@ -100,13 +113,9 @@
       }
 
       function delete_row($row, forwarder, destination, expiration) {
-        var email = validate_email('#login-email');
-        var password = $('#login-password').val();
         var response = $.post({
           url: 'delete.php',
           data: {
-            email: email,
-            password: password,
             forwarder: forwarder,
             destination: destination,
             expiration: expiration,
@@ -220,16 +229,12 @@
         $(".error").remove();
 
         // TODO: Add more validation.
-        var email = validate_email('#login-email');
         var forwarder = validate_email('#forwarder-email');
-        var password = $('#login-password').val();
         var expiration = $(e.target).prop('checked') ? null : $('#forwarder-expiration').val();
 
         var response = $.post({
           url: 'add.php',
           data: {
-            email: email,
-            password: password,
             forwarder: $('#forwarder-email').val(),
             expiration: expiration,
           },

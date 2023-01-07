@@ -1,16 +1,11 @@
 <?php
 
-require_once('private/installation.php');
+require_once('check_login.php');
 require_once('exim.php');
 require_once('mysql.php');
-require_once('login.php');
-
-check_login() or die(json_encode([
-  'error' => 'Invalid email or password'
-]));
+require_once('private/installation.php');
 
 # TODO: sanitize these to prevent injection
-$email = $_POST['email'];
 $forwarder = $_POST['forwarder'];
 $expiration = $_POST['expiration'] ? strtotime($_POST['expiration']) : 'N/A';
 
@@ -22,11 +17,11 @@ $expiration = $_POST['expiration'] ? strtotime($_POST['expiration']) : 'N/A';
 
 # Add the forwarder to the config file.
 $fp = fopen(EALIASES.'/kruskal.net', 'a');
-fwrite($fp, "{$forwarder}: {$email} {$expiration} \n");
+fwrite($fp, "{$forwarder}: {$login} {$expiration} \n");
 
 echo(json_encode([
   'success' => true,
-  'destination' => $email,
+  'destination' => $login,
   'forwarder' => $forwarder,
   'expiration' => $expiration,
 ]));
