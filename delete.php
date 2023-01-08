@@ -1,14 +1,12 @@
 <?php
 
 require_once('check_login.php');
-require_once('private/installation.php');
 require_once('exim.php');
-require_once('mysql.php');
 
 # TODO: sanitize these to prevent injection
-$destination = $_POST['destination'];
-$forwarder = $_POST['forwarder'];
-$expiration = $_POST['expiration'];// ? strtotime($_POST['expiration']) : 'N/A';
+$destination = strtolower($_POST['destination']);
+$forwarder = strtolower($_POST['forwarder']);
+$expiration = strtolower($_POST['expiration']);
 
 # TODO: Add validation via exim
 # 1. All our exim tests should continue to work before adjusting the config
@@ -19,13 +17,9 @@ forwarder_owned_by($forwarder, $login) or die(json_encode([
 ]));
 
 # Remove the forwarder to the config file.
-$file = file(EALIASES.'/kruskal.net');
-foreach($file as $index => $line) {
-  if(strcasecmp(trim($line), "{$forwarder}: {$destination} {$expiration}") == 0) {
-    unset($file[$index]);
-  }
-}
-file_put_contents(EALIASES.'/kruskal.net', implode("", $file));
+remove_forwarder($forwarder, $destination, $expiration) or die(json_encode([
+  'error' => "Internal error trying to delete $forwarder!"
+]));
 
 echo(json_encode([
   'success' => true,
