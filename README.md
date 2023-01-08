@@ -1,6 +1,15 @@
 # forwarders_ui
 UI for managing email forwarders
 
+TODO:
+1) Allow for modifying forwarder expiration dates (possibly via overwrites)
+2) Verify ownership rules before adding a forwarder (no valias, no ralias/ealias owned by someone else)
+3) Add presubmit exim validation stages to prevent regressions
+4) Allow for modifying destination emails (this will require us to track owners separately)
+5) Add postsubmit exim validation to ensure nothing went wrong
+6) Improve documentation here.
+
+
 # Installation
 The following file should be added at `private/installation.php` to make this site work.  Each parameter needs to be defined according to your server configuration.  We expect a database with a users table that contains columns for unique emails and hashed passwords of type VARCHAR(255).
 

@@ -46,8 +46,8 @@ if(!isset($_SESSION['email'])) {
         </p>
       </div>
     </form>
-    <p id="forwarder-errors">
-    </p>
+  </div>
+  <div id="forwarder-errors">
   </div>
   <div id="forwarder-data">
     <table id="forwarder-data-table">

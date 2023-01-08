@@ -10,7 +10,7 @@ $forwarder = $_POST['forwarder'];
 $expiration = $_POST['expiration'] ? strtotime($_POST['expiration']) : 'N/A';
 
 # TODO: Add validation via exim
-# 1. The forwarder should not exist, or should forward to email (anywhere on the chain)
+# 1. The forwarder should not exist, or should be owned by to current owner
 # 2. The forwarder should not exist as an explicit valias, since those will take precedent
 # 3. All our exim tests should continue to work before adjusting the config
 # 4. Post-commit test should make sure the forwarder works
