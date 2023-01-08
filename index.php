@@ -53,8 +53,8 @@ if(!isset($_SESSION['email'])) {
     <table id="forwarder-data-table">
       <thead>
         <tr>
-          <th class="col-email">Forwarder</th>
-          <th class="col-email">Destination</th>
+          <th class="col-email col-forwarder">Forwarder</th>
+          <th class="col-email col-destination" data-value="<?php echo $_SESSION['email']; ?>">Destination</th>
           <th class="sorter-shortDate col-date" data-date-format="yyymmdd">Expiration Date</th>
           <th data-filter="false" data-sorter="false"></th>
         </tr>
@@ -128,8 +128,15 @@ if(!isset($_SESSION['email'])) {
           },
           dataType: 'json'
         }).done((data) => {
-          $row.remove();
-          $('#forwarder-data-table').trigger('update');
+          if(data.error) {
+            $('#forwarder-errors').append(`<span class="error">${data.error}</span>`);
+            $('body').animate({
+              scrollTop: 0
+            });
+          } else {
+            $row.remove();
+            $('#forwarder-data-table').trigger('update');
+          }
         }).fail((data) => {
           $('#forwarder-errors').append(`<span class="error">Unknown error</span>`);
           console.error(data);
@@ -140,15 +147,17 @@ if(!isset($_SESSION['email'])) {
         var $row = $('<tr><td>'+row.forwarder+'</td>'+
           '<td>'+row.destination+'</td>'+
           '<td>'+row.expiration+'</td><td></td></tr>');
-        if(row.destination === LOGIN_EMAIL) {
-          $link = $('<a href="#" class="remove">\u2718</a>');
-          $row.find('td').last().append($link);
-          $link.click(function(event) {
-            delete_row($row, row.forwarder, row.destination, row.expiration);
-            event.preventDefault();
-            return false;
-          });
+        if(row.destination !== LOGIN_EMAIL) {
+          $row.addClass('not-owned');
         }
+        var $link = $('<a href="#" class="remove">\u2718</a>');
+        $row.find('td').last().append($link);
+        $link.click(function(event) {
+          $(".error").remove();
+          delete_row($row, row.forwarder, row.destination, row.expiration);
+          event.preventDefault();
+          return false;
+        });
         $('#forwarder-data-table')
           .find('tbody').append($row)
           .trigger('addRows', [$row, /*resort=*/true]);
@@ -161,14 +170,8 @@ if(!isset($_SESSION['email'])) {
         sortList: [[0,0], [1,0]],
         widgets: ['zebra', 'formatter', 'filter', 'pager'],
         widgetOptions: {
-          filter_placeholder: {
-            search: 'Filter...',
-            select: 'Choose...',
-            from: 'From...',
-            to: 'To...',
-          },
           formatter_column: {
-            ".col-date": function(text, data) {
+            '.col-date': function(text, data) {
               data.$cell.attr(data.config.textAttribute, text);
               var expiry = parseInt(text);
               var days = Math.round((expiry - Date.now()/1000)/(24*60*60));
@@ -185,22 +188,30 @@ if(!isset($_SESSION['email'])) {
               return '<span class="expiry" title="' + hover + '">' + display + '</span>';
             }
           },
+          filter_placeholder: {
+            search: 'Filter...',
+            select: 'Choose...',
+            from: 'From...',
+            to: 'To...',
+          },
           filter_cssFilter: ['', '', '', 'hidden'],
-          filter_formatter : {
+          filter_formatter: {
             // Date (two inputs)
-            ".col-date" : function(cell, index) {
+            '.col-date' : function(cell, index) {
               return $.tablesorter.filterFormatter.uiDatepicker( cell, index, {
                 textFrom: '',   // "from" label text
                 textTo: 'to',       // "to" label text
               });
             }
           },
+          filter_saveFilters: true,
           pager_updateArrows: true,
           pager_startPage: 0,
           pager_pageReset: 0,
           pager_size: 5,
           pager_removeRows: false,
           pager_fixedHeight: false,
+          pager_savePages: true,
         },
       });
       var response = $.post({
@@ -227,8 +238,8 @@ if(!isset($_SESSION['email'])) {
       }
 
       $('#forwarder-form').submit(function(e) {
-        e.preventDefault();
         $(".error").remove();
+        e.preventDefault();
 
         // TODO: Add more validation.
         var forwarder = validate_email('#forwarder-email');

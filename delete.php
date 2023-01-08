@@ -14,6 +14,10 @@ $expiration = $_POST['expiration'];// ? strtotime($_POST['expiration']) : 'N/A';
 # 1. All our exim tests should continue to work before adjusting the config
 # 2. Post-commit test should make sure the forwarder works
 
+forwarder_owned_by($forwarder, $login) or die(json_encode([
+  'error' => "You do not own $forwarder!"
+]));
+
 # Remove the forwarder to the config file.
 $file = file(EALIASES.'/kruskal.net');
 foreach($file as $index => $line) {

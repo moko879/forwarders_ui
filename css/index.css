@@ -64,6 +64,10 @@ body {
   align-items: center;
 }
 
+#forwarder-errors {
+  text-align: center;
+}
+
 #forwarder-data-table .col-email {
   min-width: 20em;
 }
@@ -88,6 +92,16 @@ body {
 
 #forwarder-data-table td, #forwarder-data-table th {
   text-align: center;
+}
+
+#forwarder-data-table .not-owned td {
+  color: #888;
+  font-style: italic;
+}
+
+#forwarder-data-table tr.not-owned .remove {
+  color: #e99;
+  font-style: normal;
 }
 
 /* pager element reset (needed for bootstrap) */

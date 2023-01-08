@@ -13,6 +13,8 @@ define('DB_PASSWORD', '<Fill in database password>');
 define('DB_DATABASE', '<Fill in database name>');
 define('DB_USERS_TABLE', '<Fill in users table>');
 define('EALIASES', '<Fill in server ealiases file location>');
+define('VALIASES', '<Fill in server valiases file location>');
+define('EXIM', '<Fill in server exim binary>');
 
 ?>
 ```
